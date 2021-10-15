@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Form = () => {
+const Form = (props) => {
   return (
     <div style={{padding: 30 }}>
       <h2>Form</h2>
-      <form action="/table" method="POST" class="my-4 form-inline">
+      <form onSubmit={props.handleCreation} action="/table" method="POST" class="my-4 form-inline">
       
       <label for="name" class="name">Name</label>
       <input  required placeholder='Joe Smith' type="text" name="name" id="name" class="form-control"/>
