@@ -1,16 +1,20 @@
 import React from 'react';
 
-const Appointments = () => {
+const Appointments = (props) => {
+
+  const allData = [];
+  
   return (
     <div style={{padding: 30 }}>
       <h2>Appointments</h2>
       <table className="table table-striped table-responsive">
       <thead >
         <tr>
+          <th scope="col">Select</th>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Date</th>
-          <th scope="col">Select</th>
+          <th scope="col">Time</th>
         </tr>
         </thead>
         <tbody>
@@ -19,6 +23,7 @@ const Appointments = () => {
             <td>name</td>
             <td>email</td>
             <td>date</td>
+            <td>time</td>
           </tr>
         </tbody>
     </table>

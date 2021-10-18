@@ -29,7 +29,7 @@ controller.readAllRecords = (req, res, next) => {
   console.log('reading records')
   Client.find({})
     .then(response => {
-      console.log(`result of Client.find({}) is' + ${result[0]}`);
+      console.log(`result of Client.find({}) is' + ${response[0]}`);
       res.locals.records = response;
       return next();
     })

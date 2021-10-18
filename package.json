@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --verbose",
     "front": "webpack serve --mode development --open --hot",
-    "start": "cross-env NODE_ENV=development nodemon server/server.js",
+    "start": "cross-env NODE_ENV=development nodemon ./server/server.js",
     "build": "cross-env NODE_ENV=production webpack --hot",
     "dev": "cross-env NODE_ENV=development concurrently \"nodemon ./server/server.js\"  \"webpack serve --hot --open\""
   },
@@ -25,7 +25,8 @@
     "mongoose": "^6.0.11",
     "path": "^0.12.7",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react-dom": "^16.5.2",
+    "react-hook-form": "^7.17.4"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
