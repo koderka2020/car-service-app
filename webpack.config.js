@@ -1,14 +1,39 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const outputDirectory = 'dist';
 
 module.exports = {
-  entry: ['babel-polyfill', './src/index.js'],
+  mode: process.env.NODE_ENV,
+  // entry point of our app
+  entry: './src/index.js',
   output: {
-    path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
+    filename: 'bundle.js',
+  },
+  devServer: {
+    // match the output 'publicPath'
+    publicPath: '/',
+    host: 'localhost',
+    port: 8080,
+    //enable HMR on the devServer
+    hot: true,
+    //open a new window in the browser
+    open: true,
+    // fallback to root for other urls
+    historyApiFallback: true,
+    /**
+     * proxy is required in order to make api calls to
+     * express server while using hot-reload webpack server
+     * routes api fetch requests from localhost:8080/api/* (webpack dev server)
+     * to localhost:3000/api/* (where our Express server is running)
+     */
+    proxy: {
+      '/static': 'http://localhost:3000',
+      '/build': 'http://localhost:3000',
+    }
   },
   module: {
     rules: [{
@@ -20,6 +45,7 @@ module.exports = {
     },
     {
       test: /\.css$/,
+      exclude: /node_modules/,
       use: ['style-loader', 'css-loader']
     },
     {
@@ -28,21 +54,14 @@ module.exports = {
     }
     ]
   },
-  resolve: {
-    extensions: ['*', '.js', '.jsx']
-  },
-  devServer: {
-    port: 8080,
-    open: true,
-    historyApiFallback: true,
-    proxy: {
-      '/api': 'http://localhost:3000'
-    }
-  },
   plugins: [
-    new CleanWebpackPlugin([outputDirectory]),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     })
-  ]
+  ],
+  resolve: {
+    // Enable importing JS / JSX files without specifying their extension
+      extensions: ['*', '.js', '.jsx']
+    },
 };

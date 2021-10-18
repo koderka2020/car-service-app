@@ -1,3 +1,6 @@
 {
-  "watch": ["src/server/"]
+  "env": {
+    "MONGO_PW" : "Micinka33"
+  },
+  "watch": ["server/server/"]
 }

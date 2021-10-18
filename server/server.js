@@ -1,23 +1,33 @@
-const express = require('express');
 const path = require('path');
-
+const express = require('express');
 const app = express();
-const port = 3000;
-
+// whenever we use process.env we can use variables in that config. if not there then we use port 3000
+const PORT = process.env.PORT || 3000;
+/**
+ * require routers
+ */
 const router = require('./router');
 
+/**
+ * handle parsing request body
+ */
+// // parse application/json
 app.use(express.json());
+// parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.status(200).sendFile(path.resolve(__dirname, '../src/index.html')));
+/**
+ * handle requests for static files
+ */
+ app.use('/', express.static(path.resolve(__dirname, '../build')));
+ app.use('/static', express.static(path.resolve(__dirname, '../src')));
 
-// app.use('/static', express.static(path.resolve(__dirname, "../src")));
-
-
-//redirecting 'client' requests 
+/**
+ * define route handlers
+ */
 app.use('/client', router);
 
-//handling undefined routes
+// catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => {
   res.status(404).send('This is not the page you\'re looking for...');
 });
@@ -28,5 +38,9 @@ app.use((err, req, res, next) => {
   return res.status(500).json(err);
 })
 
+/**
+ * start server
+ */
+app.listen(PORT, ()=> console.log(`Server listening on Port ${PORT}`));
 
-app.listen(port, console.log(`Server listening on Port ${port}`))
+module.exports = app;
