@@ -11,7 +11,6 @@ controller.newClientRecord = (req, res, next) => {
   const clientObj = {
     name: req.body.name,
     email: req.body.email,
-    // appointment: req.body.date,
     active: true,
   }
   Client.create(clientObj)
@@ -21,15 +20,14 @@ controller.newClientRecord = (req, res, next) => {
       return next();
     })
     .catch(err => next({
-      message: `Error creating new client  in controller.newClientRecord  because of :${err}`
+      message: `Error creating new client in controller.newClientRecord  because of :${err}`
     }));
 };
 
 controller.readAllRecords = (req, res, next) => {
-  console.log('reading records')
   Client.find({})
     .then(response => {
-      console.log(`result of Client.find({}) is' + ${response[0]}`);
+      // console.log(`result of Client.find({}) is' + ${response[0]}`);
       res.locals.records = response;
       return next();
     })
@@ -40,27 +38,36 @@ controller.readAllRecords = (req, res, next) => {
 
 
 controller.updateClientRecord = (req, res, next) => {
-  // const { _id } = req.body;
-  // const { date } = req.body;
-  // Client.findOneAndUpdate({_id: _id}, {date: date})
-  //   .then(response => {
-  //     console.log(`updated record is ${response}`);
-  //     res.locals.client = response;
-  //     return next();
-  //   })
-  //   .catch(err => next({
-  //     error: `error occured in controller.updateClientRecord: ${err} `
-  //   }))
+  const { id } = req.body;
+  const { date }  = req.body;
+  Client.findOneAndUpdate({_id: id}, {date: date})
+    .then(response => {
+      console.log(`testing - updated record is ${response}`);
+      if (response) {
+      res.locals.client = response;
+      return next();
+      } else {
+        return res.status(404).json({message:'no valid entry found for provided ID'})
+      }
+    })
+    .catch(err => next({
+      error: `error occured in controller.updateClientRecord: ${err} `
+    }))
 };
 
 controller.deleteClientRecord = (req, res, next) => {
-  // const { _id } = req.body;
-  // Client.deleteMany({active: false})
-  //   .then(response => {
-  //     console.log(`deleted record: ${response}`)
-  //   }).catch(err => next({
-  //       error: `error occured in controller.deleteClientRecord: ${err} `
-  //   }))
+  conosle.log('delete controller firing')
+  const { id } = req.params;
+  console.log(id);
+  Client.findOneAndDeleteOne({_id: id})
+    .then(() => {
+      console.log(`deleted record`);
+      // if (response) {
+      //   res.locals.deleted = response;
+        return next()})
+    .catch(err => next({
+        error: `error occured in controller.deleteClientRecord: ${err} `
+    }))
 };
 
 

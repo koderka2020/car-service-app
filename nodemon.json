@@ -2,5 +2,5 @@
   "env": {
     "MONGO_PW" : "Micinka33"
   },
-  "watch": ["server/server/"]
+  "watch": ["server/*", "package.json", "webpack.config.js"]
 }

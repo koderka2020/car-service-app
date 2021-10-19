@@ -14,17 +14,17 @@ router.post('/',
   (req,res) => res.status(200).json(req.body)
 );
 
-//DELETE SELECTED CLIENT ROUTE HANDLER
-router.delete('/',
-  controller.deleteClientRecord,
-  (req, res) => res.status(200).json(res.locals.client)
-  );
-
 //UPDATE RECORD FOR SELECTED CLIENT ROUTE HANDLER
-router.patch('/',
+router.patch('/:id',
   controller.deleteClientRecord,
   (req, res) => res.status(200).json(res.locals.client)
 );
+
+//DELETE SELECTED CLIENT ROUTE HANDLER
+router.delete('/:id',
+  controller.deleteClientRecord,
+  (req, res) => res.status(200).json(res.locals)
+  );
 
 
 module.exports = router;
