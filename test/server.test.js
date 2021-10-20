@@ -23,21 +23,21 @@ describe('POST/client', ()=> {
 
   describe('receiving correct information', ()=> {
     //should save a new client obj to db
-    xtest('should save new client to mongoDB if information is valid(strings)', async()=> {
+    it('should save new client to mongoDB if information is valid(strings)', async()=> {
       const response = await request.post('/client').send(mockObject)
     })
     //should reposnd with 200 status code
-    xtest('should respond with 200 status code', async ()=> {
+    it('should respond with 200 status code', async ()=> {
       const response = await request.post('/client').send(mockObject)
       expect(response.statusCode).toBe(200)
     })
     //should specify json in the content type header
-    xtest('response should specify json in in the content-type header', async ()=> {
+    it('response should specify json in in the content-type header', async ()=> {
       const response = await request.post('/client').send(mockObject)
       expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
     //response obj has appointment 
-    xtest('response obj has default/dynamicaly ctreated property appointment from Schema', async()=> {
+    it('response obj has default/dynamicaly ctreated property appointment from Schema', async()=> {
       const response = await request.post('/client').send(mockObject)
       expect(response.body.appointment).toBeDefined()
     })
@@ -45,7 +45,7 @@ describe('POST/client', ()=> {
 
   describe('missing information to create new user', ()=> {
     //should respond with 404 code
-    xtest('should respond with 404 status code', async ()=> {
+    it('should respond with 404 status code', async ()=> {
       const testingData = [{}, {name: "name"}, {email: "email"}];
       for (const mock of testingData) {
         const response = await request.post('/').send(mock)
@@ -62,21 +62,21 @@ describe('GET/client', ()=> {
 
   describe('receiving correct information', ()=> {
     //should etrieve and send all data from mongoDB
-    xtest('should retrieve and send all data from mongoDB collection', async()=> {
+    it('should retrieve and send all data from mongoDB collection', async()=> {
       const response = await request.get('/client').send()
     })
     //should reposnd with 200 status code
-    xtest('should respond with 200 status code', async ()=> {
+    it('should respond with 200 status code', async ()=> {
       const response = await request.get('/client').send()
       expect(response.statusCode).toBe(200)
     })
     //should specify json in the content type header
-    xtest('response should specify json in in the content-type header', async ()=> {
+    it('response should specify json in in the content-type header', async ()=> {
       const response = await request.get('/client').send()
       expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
     //response is an array of objects
-    xtest('response is an array of objects', async()=> {
+    it('response is an array of objects', async()=> {
       const mockObject = {
         name: 'harry',
         email: 'harry@potter.com'
