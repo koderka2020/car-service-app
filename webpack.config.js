@@ -43,7 +43,12 @@ module.exports = {
       exclude: /node_modules/,
       use: {
         loader: 'babel-loader'
-      }
+      },
+      //ublock the bellow code for testing react, wasn't needed for supertest
+      // query: {
+      //   presets: ['@babel/env', '@babel/preset-react'],
+      //   loader: 'babel-loader'
+      // },
     },
     {
       test: /\.css$/,

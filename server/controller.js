@@ -7,7 +7,7 @@ const controller = {};
 
 
 controller.newClientRecord = (req, res, next) => {
-  console.log('testing post method to create a new client')
+  // console.log('testing post method to create a new client')
   const clientObj = {
     name: req.body.name,
     email: req.body.email,

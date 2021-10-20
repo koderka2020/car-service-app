@@ -30,13 +30,8 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // Typical usage to compare props:
     if (this.props.name !== prevProps.name) {
       this.fetchData(this.props.name);
-      // fetch('/client')
-      // .then(response => response.json())
-      // .then(data => this.setState({ all: data }))
-      // .catch(err => `Error sending request to get all record from MongoDB because of ${err}` );
     }
   }
 
@@ -60,16 +55,17 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(result => {
-      console.log('testing fetch POST to create client:'+ result);
-    }).catch(err => `Error sending request to create new record because of ${err}` );
+      // console.log('testing fetch POST to create client:'+ result);
+      this.setState(prev => ({
+        name: "",
+        email: "",
+        date: "",
+        active: false,
+        all: [...prev.all, result],
+      }))})
+      .catch(err => `Error sending request to create new record because of ${err}` );
 
     event.target.reset();
-    this.setState({
-      name: "",
-      email: "",
-      date: "",
-      active: false,
-    })
   }
 
   handleChange(event) {
@@ -83,9 +79,9 @@ class App extends Component {
 
   handleChangeChk(event) {
     event.preventDefault();
-    this.setState({
-      active: !this.state.active,
-    });
+    this.setState(prev => ({
+      active: !prev.active,
+    }));
   }
 
   deleteRecord(event) {
@@ -105,7 +101,7 @@ render(props){
     <div>
       <h1 style={{textAlign:'center'}}>Car Service - Big Star</h1>
       <Form {...props} handleInput={this.handleInput} handleChange={this.handleChange} state={this.state}/>
-      <Appointments {...props} handleChangeChk={this.handleChangeChk} deleteRecord={this.deleteRecord} state={this.state}/>
+      <Appointments {...props} handleChangeChk={this.handleChangeChk} deleteRecord={this.deleteRecord} deleteRecord={this.deleteRecord} state={this.state}/>
     </div>
   )
 }

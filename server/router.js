@@ -11,11 +11,11 @@ router.get('/',
 //ADD NEW CLIENT ROUTE HANDLER
 router.post('/', 
   controller.newClientRecord,
-  (req,res) => res.status(200).json(req.body)
+  (req,res) => res.status(200).json(res.locals.client)
 );
 
 //UPDATE RECORD FOR SELECTED CLIENT ROUTE HANDLER
-router.patch('/:id',
+router.put('/:id',
   controller.deleteClientRecord,
   (req, res) => res.status(200).json(res.locals.client)
 );
