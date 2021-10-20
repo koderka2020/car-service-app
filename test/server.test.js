@@ -55,13 +55,41 @@ describe('POST/client', ()=> {
   })
 })
 
-afterAll(() => { 
-  mongoose.connection.close()
-})
 
 
 //testing GET
+describe('GET/client', ()=> {
 
+  describe('receiving correct information', ()=> {
+    //should etrieve and send all data from mongoDB
+    xtest('should retrieve and send all data from mongoDB collection', async()=> {
+      const response = await request.get('/client').send()
+    })
+    //should reposnd with 200 status code
+    xtest('should respond with 200 status code', async ()=> {
+      const response = await request.get('/client').send()
+      expect(response.statusCode).toBe(200)
+    })
+    //should specify json in the content type header
+    xtest('response should specify json in in the content-type header', async ()=> {
+      const response = await request.get('/client').send()
+      expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
+    })
+    //response is an array of objects
+    xtest('response is an array of objects', async()=> {
+      const mockObject = {
+        name: 'harry',
+        email: 'harry@potter.com'
+      }
+      ;
+      await request.post('/client').send((mockObject));
+      const response = await request.get('/client').send()
+      // console.log(response.body[0])
+      expect(response.body[response.body.length-1].name).toBe('harry');
+    })
+    })
+
+})
 
 
 //testing PUT
@@ -69,3 +97,8 @@ afterAll(() => {
 
 
 //testing DELETE
+
+
+afterAll(() => { 
+  mongoose.connection.close()
+})
