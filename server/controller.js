@@ -38,8 +38,8 @@ controller.readAllRecords = (req, res, next) => {
 
 
 controller.updateClientRecord = (req, res, next) => {
-  const { id } = req.body;
-  const { date }  = req.body;
+  const { id } = req.params;
+  const { date }  = req.params;
   Client.findOneAndUpdate({_id: id}, {date: date})
     .then(response => {
       console.log(`testing - updated record is ${response}`);
@@ -56,15 +56,15 @@ controller.updateClientRecord = (req, res, next) => {
 };
 
 controller.deleteClientRecord = (req, res, next) => {
-  conosle.log('delete controller firing')
+  // console.log('delete controller firing')
   const { id } = req.params;
-  console.log(id);
-  Client.findOneAndDeleteOne({_id: id})
-    .then(() => {
-      console.log(`deleted record`);
-      // if (response) {
-      //   res.locals.deleted = response;
-        return next()})
+  // console.log(id);
+  Client.findOneAndRemove({_id: id})
+    .then(response => {
+      // console.log(`deleted record ${response}`);
+        res.locals.deleted = id;
+        return next();
+      })
     .catch(err => next({
         error: `error occured in controller.deleteClientRecord: ${err} `
     }))

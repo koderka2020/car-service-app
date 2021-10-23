@@ -8,10 +8,10 @@ class Appointments extends Component {
   const records = this.props.state.all;
   for (let i =0; i < records.length; i++){
     recordsArr.push(<tr key={i} style={{color: 'lightBlue'}}>
-                      <td key={records[i]._id}><input className="form-check-input" type="checkbox" defaultChecked={this.props.state.active} onChange={this.props.handleChangeChk} id="flexCheckDefault" onChange={this.props.handleChangeChk}/></td>
-                      <td key={records[i]._id}>{records[i].name}</td>
-                      <td key={records[i]._id}>{records[i].email}</td>
-                      <td key={records[i]._id}>{moment(records[i].appointment).format("MM.DD YYYY hh:mm:ss", true)}</td>
+                      <td ><input className="form-check-input" type="checkbox" defaultChecked={this.props.state.active} onChange={this.props.handleChangeChk} id="flexCheckDefault" onChange={this.props.handleChangeChk}/></td>
+                      <td >{records[i].name}</td>
+                      <td >{records[i].email}</td>
+                      <td >{moment(records[i].appointment).format("MM.DD YYYY hh:mm:ss", true)}</td>
                     </tr>)
   }
   
