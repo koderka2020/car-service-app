@@ -1,19 +1,33 @@
+const {MongoClient} = require('mongodb');
 const supertest = require('supertest');
-const app = require('../server/server');
-const mongoose = require('mongoose');
-const { TestWatcher } = require('@jest/core');
-// const { TestWatcher } = require('@jest/core');
+const app = require('../server/app');
+// const mongoose = require('mongoose');
+require('dotenv').config();
+
 const request = supertest(app);
 const server = 'http://localhost:3000';
 
-//simple test to test testing environment config:
-// describe('Sample Test', () => {
-//   it('should test that true === true', () => {
-//      expect(true).toBe(true)
-//   })
-// })
+// afterAll(async () => {
+//   await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
+// });
+describe('testing end-poitns', () => {
+  let connection;
+  let db;
 
+  beforeAll(async () => {
+    connection = await MongoClient.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+    });
+    db = await connection.db("nielsen-car-service");
+  });
 
+  afterAll(async () => {
+    // await connection.close();
+    await connection.close();
+    await db.close();
+  });
+
+//testing POST request
 describe('POST/client', ()=> {
 
   const mockObject = {
@@ -54,8 +68,6 @@ describe('POST/client', ()=> {
     })
   })
 })
-
-
 
 //testing GET
 describe('GET/client', ()=> {
@@ -98,7 +110,4 @@ describe('GET/client', ()=> {
 
 //testing DELETE
 
-
-afterAll(() => { 
-  mongoose.connection.close()
-})
+});

@@ -21,10 +21,16 @@ router.put('/:id',
 );
 
 //DELETE SELECTED CLIENT ROUTE HANDLER
-router.delete('/:id',
-  controller.deleteClientRecord,
+router.delete('/',
+  controller.deleteAppointments,
   (req, res) => res.status(200).json(res.locals.deleted)
-  );
+);
+
+//this endpoint doesn't take input from the front, only serves to clear the db from all data via postman after testing
+//below should get deleted once I refactor code for a mock DB/injection DB for testing
+// router.delete('/',
+//   controller.deleteAll,
+//   (req,res) => res.status(200).json({message: 'db has been emptied'}))
 
 
 module.exports = router;

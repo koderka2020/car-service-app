@@ -15,7 +15,7 @@ controller.newClientRecord = (req, res, next) => {
   };
   Client.create(clientObj)
     .then(result => {
-      console.log(`result of Client.create is' + ${result}`);
+      // console.log(`result of Client.create is' + ${result}`);
       res.locals.client = result;
       return next();
     })
@@ -61,16 +61,15 @@ controller.updateClientRecord = (req, res, next) => {
 };
 
 //deleting record
-controller.deleteClientRecord = (req, res, next) => {
-  // console.log('delete controller firing')
-  const { id } = req.params;
-  // console.log(id);
-  Client.findOneAndRemove({_id: id})
+controller.deleteAppointments = (req, res, next) => {
+  const { ids } = req.body;
+  // console.log(ids);
+  Client.deleteMany({ _id: { $in: ids }})
     .then(response => {
       if (!response){
-        return res.status(400).json({message:'no valid entry found for provided ID'});
+        return res.status(400).json({message:'no valid entry found for provided IDs'});
       }else{
-        res.locals.deleted = id;
+        res.locals.deleted = response;
         return next();
       }
     })
@@ -79,6 +78,20 @@ controller.deleteClientRecord = (req, res, next) => {
     }));
 };
 
+controller.deleteAll = (req, res, next) => {
+  Client.deleteMany({})
+    .then(result => {
+      console.log('deleting of all data finished');
+      return next();
+    })
+    .catch(err => next({
+      error: `error occured in controller.deleteAll: ${err} `
+    }))
+}
 
+// controller.deleteSleceted = (re,res, next) => {
+//   const {} = req.body // get all selected clients from the req.body
+//   Client.deleteMany({userUID: uid, id: { $in: [10, 2, 3, 5]}})
+// }
 
 module.exports = controller;

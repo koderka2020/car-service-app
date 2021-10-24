@@ -12,6 +12,7 @@ class App extends Component {
       date: "",
       active: false,
       all: [],
+      toDel: [],
     }
 
     this.handleInput = this.handleInput.bind(this);
@@ -77,18 +78,39 @@ class App extends Component {
     });
   }
 
-  handleChangeChk(event) {
-    event.preventDefault();
-    this.setState(prev => ({
-      active: !prev.active,
-    }));
+  //appending rows with checkbox clicked to this.state.toDel array, this will be sent to query our db
+  handleChangeChk(event, item) {
+    // console.log(item._id)
+    if (event.target.checked){
+      let arr = this.state.toDel;
+      arr.push(item._id);
+      this.setState({toDel : arr});
+    }else{
+      let sortedOut = this.state.toDel.splice(this.state.toDel.indexOf(item._id),1);
+      this.setState({toDel : sortedOut})
+    }
+    // console.log(this.state.toDel)
   }
 
-  deleteRecord(event) {
-    event.preventDefault();
+  //function invoked after the delete button gets clicked
+  deleteRecord() {
+    // console.log(this.state.toDel)
+		if(window.confirm('Are you sure, want to delete the selected appointments?')) {
+			fetch('/client', {
+				method: 'DELETE',
+        headers: {'Content-Type' : 'application/json'},
+				body: JSON.stringify({ids : this.state.toDel}),
+			})
+      .then(response => {
+          // console.log(this.state.toDel);
+      })
+      .catch(err => `Error sending request to delete records because of ${err}`)
+		};
 
-
-  }
+  this.setState({ 
+    ...this.state,
+    toDel: []});
+	}
 
   updateRecord(event) {
     event.preventDefault();
@@ -101,7 +123,7 @@ render(props){
     <div>
       <h1 style={{textAlign:'center'}}>Car Service - Big Star</h1>
       <Form {...props} handleInput={this.handleInput} handleChange={this.handleChange} state={this.state}/>
-      <Appointments {...props} handleChangeChk={this.handleChangeChk} deleteRecord={this.deleteRecord} deleteRecord={this.deleteRecord} state={this.state}/>
+      <Appointments {...props} handleChangeChk={this.handleChangeChk} updateRecord={this.updateRecord} deleteRecord={this.deleteRecord} state={this.state}/>
     </div>
   )
 }

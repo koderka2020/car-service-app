@@ -1,15 +1,7 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
 
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: 'nielsen-car-service',
-})
-  .then(() => console.log('Connected to MongoDB' + mongoose.connection.readyState))// to make sure mongoose is connected to DB-> That code will return the database state. If it returns 1 that means you're connected. If it returns 0 that means you're not connected.
-  .catch(err => console.log(err));
 
 const clientSchema = new Schema({
   name: {type: String, 

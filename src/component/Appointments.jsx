@@ -7,8 +7,9 @@ class Appointments extends Component {
   const recordsArr = [];
   const records = this.props.state.all;
   for (let i =0; i < records.length; i++){
+    const item = records[i];
     recordsArr.push(<tr key={i} style={{color: 'lightBlue'}}>
-                      <td ><input className="form-check-input" type="checkbox" defaultChecked={this.props.state.active} onChange={this.props.handleChangeChk} id="flexCheckDefault" onChange={this.props.handleChangeChk}/></td>
+                      <td ><input value={item._id} id={item._id} className="form-check-input" type="checkbox" defaultChecked={this.props.state.active} onChange={(event)=> this.props.handleChangeChk(event, item)}/></td>
                       <td >{records[i].name}</td>
                       <td >{records[i].email}</td>
                       <td >{moment(records[i].appointment).format("MM.DD YYYY hh:mm:ss", true)}</td>
@@ -19,7 +20,7 @@ class Appointments extends Component {
     <div style={{padding: 30 }}>
       <h2>Scheduled Appointments:</h2>
       <button className="btn btn-success" type="submit" style={{margin: 30 }} onClick={this.props.deleteRecord}>Delete Appointment/s</button>
-    <button className="btn btn-success" type="submit" style={{margin: 30 }} onClick={this.props.updateRecord}>Update Date</button>
+    <button className="btn btn-success" type="submit" style={{margin: 30 }} onClick={this.props.updateRecord}>Update</button>
       <table className="table table-striped table-responsive">
       <thead >
         <tr>
