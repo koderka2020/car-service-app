@@ -15,7 +15,7 @@ class App extends Component {
       all: [],
       checked: [],
     }
-
+    this.data = this.data.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeChk = this.handleChangeChk.bind(this);
@@ -60,6 +60,13 @@ class App extends Component {
     event.target.reset();
   }
 
+  data () { 
+    return fetch('/client')
+  .then(response => response.json())
+  .then(data => this.setState({ all: data }))
+  .catch(err => `Error sending request to get all record from MongoDB because of ${err}` )
+ }
+//method to accept inputs from the form and change the state
   handleChange(event) {
     event.preventDefault();
     const name = event.target.name;
@@ -68,7 +75,7 @@ class App extends Component {
       [name] : value,
     });
   }
-
+  
   //appending rows with checkbox clicked to this.state.toDel array, this will be sent to query our db
   handleChangeChk(event, item) {
     // console.log(item._id)
@@ -77,11 +84,8 @@ class App extends Component {
       arr.push(item._id);
       this.setState({checked : arr});
     }else{
-      let sortedOut = this.state.toDel.splice(this.state.checked.indexOf(item._id),1);
-      this.setState(prev => ({
-        ...this.state,
-        active: !prev.active,
-        checked : sortedOut}))
+      let sortedOut = this.state.checked.splice(this.state.checked.indexOf(item._id),1);
+      this.setState({checked : sortedOut})
     }
     }
 
@@ -93,13 +97,10 @@ class App extends Component {
         headers: {'Content-Type' : 'application/json'},
 				body: JSON.stringify({ids : this.state.checked}),
 			})
-      .then(response => {
-          this.setState({ 
-            ...this.state,
-            checked: []});
-      })
+      .then(response => this.setState({checked: []}))
       .catch(err => `Error sending request to delete records because of ${err}`)
 		};
+    this.data();
 	}
 
   //method to update scheduled time => new random date/time
@@ -111,22 +112,22 @@ class App extends Component {
     } else {
       const idToUpdate = this.state.checked[0];
       const newAppointment = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
-
       if(window.confirm('You are about to update the appointment')) {
         fetch(`/client/${idToUpdate}`, {
           method: 'PUT',
           headers: {'Content-Type' : 'application/json'},
           body: JSON.stringify({ appointment : newAppointment}),
         })
-        .then(response => {
-            console.log(response);
-        })
+        .then(response => console.log(response))
         .catch(err => `Error sending request to update record because of ${err}`)
       };
     }
   this.setState({ 
     ...this.state,
+    active: false,
     checked: []});
+
+    this.data();
   }
 
   filter(){
@@ -135,10 +136,7 @@ class App extends Component {
 
 componentDidMount() {
   // Simple GET request using fetch to get all records from MongoDB
-  fetch('/client')
-      .then(response => response.json())
-      .then(data => this.setState({ all: data }))
-      .catch(err => `Error sending request to get all record from MongoDB because of ${err}` )
+  this.data();
 }
 
 render(props){
