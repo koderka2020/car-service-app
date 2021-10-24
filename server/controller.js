@@ -40,10 +40,11 @@ controller.readAllRecords = (req, res, next) => {
 //updating record
 controller.updateClientRecord = (req, res, next) => {
   // console.log('update client middleware firing');
-  // console.log(req.params);
+  console.log(req.params);
   const { id } = req.params;
-  const { appointment }  = req.body;
-  Client.findByIdAndUpdate({_id: id}, {appointment: appointment}, {
+  // const { appointment }  = req.body;
+  const newAppointment = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
+  Client.findByIdAndUpdate({_id: id}, {appointment: newAppointment}, {
     new: true
   })
     .then(response => {
@@ -78,20 +79,18 @@ controller.deleteAppointments = (req, res, next) => {
     }));
 };
 
-controller.deleteAll = (req, res, next) => {
-  Client.deleteMany({})
-    .then(result => {
-      console.log('deleting of all data finished');
-      return next();
-    })
-    .catch(err => next({
-      error: `error occured in controller.deleteAll: ${err} `
-    }))
-}
 
-// controller.deleteSleceted = (re,res, next) => {
-//   const {} = req.body // get all selected clients from the req.body
-//   Client.deleteMany({userUID: uid, id: { $in: [10, 2, 3, 5]}})
+//use after testing => to delete all records via postman, no rout to the front-end 
+// controller.deleteAll = (req, res, next) => {
+//   Client.deleteMany({})
+//     .then(result => {
+//       console.log('deleting of all data finished');
+//       return next();
+//     })
+//     .catch(err => next({
+//       error: `error occured in controller.deleteAll: ${err} `
+//     }))
 // }
+
 
 module.exports = controller;

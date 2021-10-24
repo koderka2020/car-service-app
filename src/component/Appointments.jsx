@@ -19,8 +19,9 @@ class Appointments extends Component {
   return (
     <div style={{padding: 30 }}>
       <h2>Scheduled Appointments:</h2>
-      <button className="btn btn-success" type="submit" style={{margin: 30 }} onClick={this.props.deleteRecord}>Delete Appointment/s</button>
-    <button className="btn btn-success" type="submit" style={{margin: 30 }} onClick={this.props.updateRecord}>Update</button>
+      <button className="btn btn-success" type="submit" onClick={this.props.deleteRecord}>Delete Appointment/s</button>
+      <button className="btn btn-success" type="submit" onClick={this.props.updateRecord}>Update Appointment</button>
+      <button className="btn btn-success" type="submit" onClick={this.props.filter}>Filter Appointments by date</button>
       <table className="table table-striped table-responsive">
       <thead >
         <tr>

@@ -1,7 +1,7 @@
 const {MongoClient} = require('mongodb');
 const supertest = require('supertest');
 const app = require('../server/app');
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const request = supertest(app);
@@ -25,14 +25,15 @@ describe('testing end-poitns', () => {
     // await connection.close();
     await connection.close();
     await db.close();
+    await mongoose.close();
   });
 
 //testing POST request
 describe('POST/client', ()=> {
-
+  let num = 0;
   const mockObject = {
-    name: 'name',
-    email: 'email'
+    name: `name${num++}`,
+    email: `email${num++}`,
   }
 
   describe('receiving correct information', ()=> {

@@ -12,7 +12,7 @@ class App extends Component {
       date: "",
       active: false,
       all: [],
-      toDel: [],
+      checked: [],
     }
 
     this.handleInput = this.handleInput.bind(this);
@@ -20,6 +20,7 @@ class App extends Component {
     this.handleChangeChk = this.handleChangeChk.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
     this.updateRecord = this.updateRecord.bind(this);
+    this.filter = this.filter.bind(this);
   }
 
   componentDidMount() {
@@ -82,39 +83,60 @@ class App extends Component {
   handleChangeChk(event, item) {
     // console.log(item._id)
     if (event.target.checked){
-      let arr = this.state.toDel;
+      let arr = this.state.checked;
       arr.push(item._id);
-      this.setState({toDel : arr});
+      this.setState({checked : arr});
     }else{
-      let sortedOut = this.state.toDel.splice(this.state.toDel.indexOf(item._id),1);
-      this.setState({toDel : sortedOut})
+      let sortedOut = this.state.toDel.splice(this.state.checked.indexOf(item._id),1);
+      this.setState(prev => ({
+        ...this.state,
+        active: !prev.active,
+        checked : sortedOut}))
     }
-    // console.log(this.state.toDel)
-  }
+    }
 
   //function invoked after the delete button gets clicked
   deleteRecord() {
-    // console.log(this.state.toDel)
-		if(window.confirm('Are you sure, want to delete the selected appointments?')) {
+    if(window.confirm('Are you sure, want to delete the selected appointments?')) {
 			fetch('/client', {
 				method: 'DELETE',
         headers: {'Content-Type' : 'application/json'},
-				body: JSON.stringify({ids : this.state.toDel}),
+				body: JSON.stringify({ids : this.state.checked}),
 			})
       .then(response => {
-          // console.log(this.state.toDel);
+          this.setState({ 
+            ...this.state,
+            checked: []});
       })
       .catch(err => `Error sending request to delete records because of ${err}`)
 		};
-
-  this.setState({ 
-    ...this.state,
-    toDel: []});
 	}
 
-  updateRecord(event) {
-    event.preventDefault();
+  updateRecord() {
+    if (this.state.checked.length === 0) {
+      alert("You haven't selected any records")
+    } else if (this.state.checked.length > 1){
+      alert("You can only select one record at the time")
+    } else {
+      const idToUpdate = this.state.checked[0];
+      if(window.confirm('You are about to update the appointment')) {
+        fetch(`/client/${idToUpdate}`, {
+          method: 'PUT',
+          headers: {'Content-Type' : 'application/json'},
+          body: JSON.stringify({id : idToUpdate}),
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(err => `Error sending request to update record because of ${err}`)
+      };
+    }
+  this.setState({ 
+    ...this.state,
+    checked: []});
+  }
 
+  filter(){
 
   }
 

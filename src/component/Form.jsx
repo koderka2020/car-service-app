@@ -23,7 +23,7 @@ class Form extends React.Component {
       <input  required placeholder='Time' type="time" name="time" id="time" className="form-control"/> */}
       
       {/* <button className="btn btn-success" type="submit" style={{margin: 30 }}>Schedule now</button> */}
-      <button className="btn btn-success" type="submit" style={{margin: 30 }}>Schedule within 3 months</button>
+      <button className="btn btn-success" type="submit" >Schedule within 3 months</button>
 
     </form>
     </div>
