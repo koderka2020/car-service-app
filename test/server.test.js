@@ -15,7 +15,7 @@ describe('testing end-poitns', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await mongoose.connect(process.env.MONGO_URI, {
+    connection = await mongoose.connect('mongodb+srv://koderka2020:Micinka33@cluster0.wl6qh.mongodb.net/nielsen-car-service?retryWrites=true&w=majority', {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
