@@ -12,6 +12,7 @@ class Appointments extends Component {
                       <td ><input value={item._id} id={item._id} className="form-check-input" type="checkbox" defaultChecked={this.props.state.active} onChange={(event)=> this.props.handleChangeChk(event, item)}/></td>
                       <td >{records[i].name}</td>
                       <td >{records[i].email}</td>
+                      <td >{records[i].reason}</td>
                       <td >{moment(records[i].appointment).format("MM.DD YYYY hh:mm:ss", true)}</td>
                     </tr>)
   }
@@ -28,6 +29,7 @@ class Appointments extends Component {
           <th scope="col">Select</th>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
+          <th scope="col">Description</th>
           <th scope="col">Date</th>
         </tr>
         </thead>

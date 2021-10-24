@@ -9,10 +9,10 @@ const clientSchema = new Schema({
   email: {type: String, 
     required: true,
   },
+  reason: {type: String, 
+    required: true,
+  },
   appointment: {type: Date, 
-    // default: ()=> new Date(),
-    // min: Date.now, 
-    // max: () => Date.now() + 180*24*60*60*1000, //set limit to 180 days in the future
     default:() => new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000))
   },
   // active: {type: Boolean, 

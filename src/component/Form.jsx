@@ -16,6 +16,10 @@ class Form extends React.Component {
       <label className="email">Email address</label>
       <input  required placeholder='joe@gmail.com' type="email" name="email" id="email" className="form-control" onChange={this.props.handleChange}/>
       
+      <label className="time">Appointment description</label>
+      <input  required placeholder='description' type="text" name="reason" id="reason" className="form-control" onChange={this.props.handleChange}/> 
+      
+      <br/>
       {/* <label className="date">Date</label>
       <input  required placeholder='Date' type="date" name="date" id="date" className="form-control"/>
 

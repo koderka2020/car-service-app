@@ -11,6 +11,7 @@ controller.newClientRecord = (req, res, next) => {
   const clientObj = {
     name: req.body.name,
     email: req.body.email,
+    reason: req.body.reason,
     active: true,
   };
   Client.create(clientObj)
@@ -40,15 +41,13 @@ controller.readAllRecords = (req, res, next) => {
 //updating record
 controller.updateClientRecord = (req, res, next) => {
   // console.log('update client middleware firing');
-  console.log(req.params);
   const { id } = req.params;
-  // const { appointment }  = req.body;
-  const newAppointment = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
-  Client.findByIdAndUpdate({_id: id}, {appointment: newAppointment}, {
+  const { appointment } = req.body;
+  // const newAppointment = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
+  Client.findByIdAndUpdate({_id: id}, {appointment: appointment}, {
     new: true
   })
     .then(response => {
-      // console.log(`testing - updated record is ${response}`);
       if (response) {
         res.locals.client = response;
         return next();

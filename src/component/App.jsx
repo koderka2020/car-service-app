@@ -10,6 +10,7 @@ class App extends Component {
       name: "",
       email: "",
       date: "",
+      reason: "",
       active: false,
       all: [],
       checked: [],
@@ -23,30 +24,18 @@ class App extends Component {
     this.filter = this.filter.bind(this);
   }
 
-  componentDidMount() {
-    // Simple GET request using fetch to get all records from MongoDB
-    fetch('/client')
-        .then(response => response.json())
-        .then(data => this.setState({ all: data }))
-        .catch(err => `Error sending request to get all record from MongoDB because of ${err}` )
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.name !== prevProps.name) {
-      this.fetchData(this.props.name);
-    }
-  }
-
   handleInput(event) {
     event.preventDefault();
     alert('a new client was saved to the database');
     const inputName = this.state.name;
     const inputEmail = this.state.email;
+    const inputReason = this.state.reason;
     const inputActive = this.state.active;
 
     const newClient = JSON.stringify({
       name: inputName,
       email: inputEmail,
+      reason: inputReason,
       active: inputActive,
     });
 
@@ -62,6 +51,7 @@ class App extends Component {
         name: "",
         email: "",
         date: "",
+        reason: "",
         active: false,
         all: [...prev.all, result],
       }))})
@@ -112,6 +102,7 @@ class App extends Component {
 		};
 	}
 
+  //method to update scheduled time => new random date/time
   updateRecord() {
     if (this.state.checked.length === 0) {
       alert("You haven't selected any records")
@@ -119,11 +110,13 @@ class App extends Component {
       alert("You can only select one record at the time")
     } else {
       const idToUpdate = this.state.checked[0];
+      const newAppointment = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
+
       if(window.confirm('You are about to update the appointment')) {
         fetch(`/client/${idToUpdate}`, {
           method: 'PUT',
           headers: {'Content-Type' : 'application/json'},
-          body: JSON.stringify({id : idToUpdate}),
+          body: JSON.stringify({ appointment : newAppointment}),
         })
         .then(response => {
             console.log(response);
@@ -139,6 +132,14 @@ class App extends Component {
   filter(){
 
   }
+
+componentDidMount() {
+  // Simple GET request using fetch to get all records from MongoDB
+  fetch('/client')
+      .then(response => response.json())
+      .then(data => this.setState({ all: data }))
+      .catch(err => `Error sending request to get all record from MongoDB because of ${err}` )
+}
 
 render(props){
   return (

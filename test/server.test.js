@@ -1,4 +1,4 @@
-const {MongoClient} = require('mongodb');
+
 const supertest = require('supertest');
 const app = require('../server/app');
 const mongoose = require('mongoose');
@@ -15,33 +15,32 @@ describe('testing end-poitns', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await MongoClient.connect(process.env.MONGO_URI, {
+    connection = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
+      useUnifiedTopology: true
     });
-    db = await connection.db("nielsen-car-service");
   });
 
   afterAll(async () => {
-    // await connection.close();
-    await connection.close();
-    await db.close();
-    await mongoose.close();
+    await mongoose.connection.close();
   });
+
+  let num = 0;
+  const mockObject = {
+    id: 12345,
+    name: `name${num++}`,
+    email: `email${num++}`,
+    reason: 'fixing car',
+  }
 
 //testing POST request
 describe('POST/client', ()=> {
-  let num = 0;
-  const mockObject = {
-    name: `name${num++}`,
-    email: `email${num++}`,
-  }
-
-  describe('receiving correct information', ()=> {
+  describe('sending correctly formated information', ()=> {
     //should save a new client obj to db
     it('should save new client to mongoDB if information is valid(strings)', async()=> {
       const response = await request.post('/client').send(mockObject)
     })
-    //should reposnd with 200 status code
+    //should respond with 200 status code
     it('should respond with 200 status code', async ()=> {
       const response = await request.post('/client').send(mockObject)
       expect(response.statusCode).toBe(200)
@@ -72,7 +71,6 @@ describe('POST/client', ()=> {
 
 //testing GET
 describe('GET/client', ()=> {
-
   describe('receiving correct information', ()=> {
     //should etrieve and send all data from mongoDB
     it('should retrieve and send all data from mongoDB collection', async()=> {
@@ -91,8 +89,10 @@ describe('GET/client', ()=> {
     //response is an array of objects
     it('response is an array of objects', async()=> {
       const mockObject = {
+        id: 12345,
         name: 'harry',
-        email: 'harry@potter.com'
+        email: 'harry@potter.com',
+        reason: 'fixing car',
       }
       ;
       await request.post('/client').send((mockObject));
@@ -100,15 +100,38 @@ describe('GET/client', ()=> {
       // console.log(response.body[0])
       expect(response.body[response.body.length-1].name).toBe('harry');
     })
-    })
+  })
+})
 
+//testing PUT => not passing
+describe('PUT/client/:id', ()=> {
+  const testingInput = request.post('/client').send(mockObject);
+  const newDate = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
+  const id = testingInput._data.id;
+  console.log(id)
+  describe('updating data for selected client in DB', ()=> {
+    //should respond with 200 status code => returning 500
+    it('should respond with 200 status code', async ()=> {
+      const response = await request.put('/client/'+ id).send({appointment:newDate})
+      expect(response.statusCode).toBe(200)
+    })
+    //should specify json in the content type header => this one passing
+    it('response should specify json in in the content-type header', async ()=> {
+      const response = await request.put('/client/'+ id).send({appointment:newDate})
+      expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
+    })
+    //response obj has appointment => returning undefined
+    it('response obj has appointment', async()=> {
+      const response = await request.put('/client/'+ id).send({appointment:newDate})
+      console.log(response)
+      expect(response.body.appointment).toBeDefined()
+    })
+    })
 })
 
 
-//testing PUT
-
-
-
 //testing DELETE
+
+
 
 });
