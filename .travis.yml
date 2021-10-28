@@ -4,6 +4,8 @@ node_js:
   - "stable"
 
 script:
+  - echo 'Build starts!!'
+  - yarn
   - npm run test
 
 notification:
