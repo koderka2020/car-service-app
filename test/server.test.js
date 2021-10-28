@@ -122,6 +122,7 @@ describe('testing PUT request endpoint', ()=> {
 })
 
 
+
 //testing DELETE
 describe('DELETE/client', ()=> {
   it('should respond with 200 status code', async ()=> {
