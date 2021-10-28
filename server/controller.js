@@ -43,6 +43,7 @@ controller.updateClientRecord = (req, res, next) => {
   // console.log('update client middleware firing');
   const { id } = req.params;
   const { appointment } = req.body;
+  // console.log(appointment)
   // const newAppointment = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
   Client.findByIdAndUpdate({_id: id}, {appointment: appointment}, {
     new: true

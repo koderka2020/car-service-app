@@ -7,25 +7,26 @@ require('dotenv').config();
 const request = supertest(app);
 const server = 'http://localhost:3000';
 
-// afterAll(async () => {
-//   await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
+let connection;
+let db;
+
+//becasue of this code block mongoose wasn't disconnecting:
+// beforeAll(async () => {
+//                             console.log('testing before all 1')
+//   connection = await mongoose.connect(process.env.MONGO_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   });
 // });
+
+afterAll(async () => {
+                            console.log('testing afetr all 2')
+
+  await mongoose.connection.close();
+});
+
 describe('testing end-poitns', () => {
-  let connection;
-  let db;
-
-  beforeAll(async () => {
-    connection = await mongoose.connect('mongodb+srv://koderka2020:Micinka33@cluster0.wl6qh.mongodb.net/nielsen-car-service?retryWrites=true&w=majority', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
-  
+                            console.log('testing 3')
   const mockObject = {
     id: 12345,
     name: 'name',
@@ -104,12 +105,11 @@ describe('GET/client', ()=> {
 })
 
 //testing PUT => not passing
-describe('PUT/client/:id', ()=> {
-  const testingInput = request.post('/client').send(mockObject);
-  const newDate = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
-  const id = testingInput._data.id;
-  console.log(id)
+describe('testing PUT request endpoint', ()=> {
   describe('updating data for selected client in DB', ()=> {
+    // const testingInput = request.post('/client').send(mockObject);
+    const newDate = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
+    const id = mockObject.id;
     //should respond with 200 status code => returning 500
     xit('should respond with 200 status code', async ()=> {
       const response = await request.put('/client/'+ id).send({appointment:newDate})
@@ -131,7 +131,10 @@ describe('PUT/client/:id', ()=> {
 
 
 //testing DELETE
+xdescribe('DELETE/client', ()=> {
 
+
+})
 
 
 });
