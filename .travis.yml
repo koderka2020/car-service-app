@@ -4,6 +4,7 @@ node_js:
   - "stable"
 
 script:
-  - echo "hello world"
+  - npm run build
+  - npm run test
 
 
