@@ -19,14 +19,14 @@ let db;
 //   });
 // });
 
-afterAll(async () => {
-                            console.log('testing afetr all 2')
+// afterAll(async () => {
+//                             console.log('testing afetr all 2')
 
-  await mongoose.connection.close();
-});
+//   await mongoose.connection.close();
+// });
 
 describe('testing end-poitns', () => {
-                            console.log('testing 3')
+
   const mockObject = {
     id: 12345,
     name: 'name',
@@ -107,7 +107,6 @@ describe('GET/client', ()=> {
 //testing PUT => not passing
 describe('testing PUT request endpoint', ()=> {
   describe('updating data for selected client in DB', ()=> {
-    // const testingInput = request.post('/client').send(mockObject);
     const newDate = new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000));
     const id = mockObject.id;
     //should respond with 200 status code => returning 500
@@ -115,24 +114,24 @@ describe('testing PUT request endpoint', ()=> {
       const response = await request.put('/client/'+ id).send({appointment:newDate})
       expect(response.statusCode).toBe(200)
     })
-    //should specify json in the content type header => this one passing
     it('response should specify json in in the content-type header', async ()=> {
       const response = await request.put('/client/'+ id).send({appointment:newDate})
       expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
-    })
-    //response obj has appointment => returning undefined
-    xit('response obj has appointment', async()=> {
-      const response = await request.put('/client/'+ id).send({appointment:newDate})
-      console.log(response)
-      expect(response.body.appointment).toBeDefined()
     })
     })
 })
 
 
 //testing DELETE
-xdescribe('DELETE/client', ()=> {
-
+describe('DELETE/client', ()=> {
+  it('should respond with 200 status code', async ()=> {
+    const response = await request.delete('/client/').send({})
+    expect(response.statusCode).toBe(200)
+  })
+  it('response should specify json in in the content-type header', async ()=> {
+    const response = await request.delete('/client/').send({})
+    expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
+  })
 
 })
 
