@@ -4,7 +4,7 @@
   "description": "simple nodejs/express app",
   "main": "server/app.js",
   "scripts": {
-    "test": "jest --verbose --detectOpenHandles --watch",
+    "test": "jest --verbose --detectOpenHandles --watchAll",
     "start": "nodemon ./server/app.js",
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "cross-env NODE_ENV=development concurrently \"nodemon ./server/app.js\" \"webpack-dev-server --hot --open --watch\""
