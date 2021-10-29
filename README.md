@@ -1,7 +1,20 @@
 # Car-service-scheduling-app
 
 This repo should contain:
-* Clear instructions on how to build and run the application
+* Clear instructions on how to build and run the application:
+
+to install dependencies:
+=> run npm install 
+
+to start the application in development mode with hot reload to see active changes:
+=> run npm dev
+
+to budle node_modules with the application's code
+=> run npm build
+
+to start the application on localhost: 3000 - production mode, application is ready for deployment:
+=> npm run start
+
 * Full source code located in a git repository or similar
 * Appropriate comments
 * Proper format in javascript/node.js

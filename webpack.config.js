@@ -33,7 +33,7 @@ module.exports = {
      */
     proxy: {
       '/': 'http://localhost:3000',
-      // '/build': 'http://localhost:3000',
+      '/build': 'http://localhost:3000',
     }
   },
   devtool: 'eval-source-map',

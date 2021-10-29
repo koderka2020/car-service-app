@@ -2,12 +2,12 @@
   "name": "car-service",
   "version": "1.0.0",
   "description": "simple nodejs/express app",
-  "main": "server/server.js",
+  "main": "server/app.js",
   "scripts": {
     "test": "jest --verbose --detectOpenHandles --watch",
-    "start": "cross-env NODE_ENV=development node ./server/server.js",
+    "start": "nodemon ./server/app.js",
     "build": "cross-env NODE_ENV=production webpack",
-    "dev": "cross-env NODE_ENV=development concurrently \"nodemon ./server/server.js\" \"webpack-dev-server --hot --open --watch\""
+    "dev": "cross-env NODE_ENV=development concurrently \"nodemon ./server/app.js\" \"webpack-dev-server --hot --open --watch\""
   },
   "nodemonConfig": {
     "ignore": [
