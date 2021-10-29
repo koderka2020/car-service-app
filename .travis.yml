@@ -5,7 +5,7 @@ node_js:
 
 script:
   - echo 'Build starts!!'
-  - npm run test
+  - npm test
 
 notification:
   email: false
