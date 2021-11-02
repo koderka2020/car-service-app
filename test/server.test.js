@@ -23,6 +23,7 @@ afterAll(async () => {
   console.log('testing after all 2');
   await mongoose.connection.close();
 });
+jest.setTimeout(5000)
 
 describe('testing end-poitns', () => {
 
