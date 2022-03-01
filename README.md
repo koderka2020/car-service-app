@@ -1,6 +1,6 @@
 # Car-service-scheduling-app
 
-This repo should contain:
+This repo contains:
 * Clear instructions on how to build and run the application:
 
 to install dependencies:
