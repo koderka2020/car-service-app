@@ -12,7 +12,6 @@ controller.newClientRecord = (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     reason: req.body.reason,
-    active: true,
   };
   Client.create(clientObj)
     .then(result => {

@@ -15,7 +15,7 @@ const router = require('./router');
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: 'nielsen-car-service',
+  dbName: 'carwash',
 })
   .then(() => console.log('Connected to MongoDB' + mongoose.connection.readyState))// to make sure mongoose is connected to DB-> That code will return the database state. If it returns 1 that means you're connected. If it returns 0 that means you're not connected.
   .catch(err => console.log(err));

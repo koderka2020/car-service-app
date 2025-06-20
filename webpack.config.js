@@ -1,11 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
   // entry point of our app
-  entry: './src/index.js',
+  entry: path.resolve(__dirname,'./src/index.js'),
   output: {
     path: path.resolve(__dirname, 'build'),
     //output 'publicPath'
@@ -14,13 +14,14 @@ module.exports = {
   },
   devServer: {
     // match the output 'publicPath'
-    publicPath: '/',
+    static: {
+      directory: path.resolve(__dirname, 'build'), // replaces contentBase
+      publicPath: '/',                            // this stays here
+    },
     host: 'localhost',
     port: 8080,
     //enable HMR on the devServer
     hot: true,
-    // match the output path
-    contentBase:'./build',
     //open a new window in the browser when running script
     open: true,
     // fallback to root for other urls
@@ -31,10 +32,14 @@ module.exports = {
      * routes api fetch requests from localhost:8080/api/* (webpack dev server)
      * to localhost:3000/api/* (where our Express server is running)
      */
-    proxy: {
-      '/': 'http://localhost:3000',
-      '/build': 'http://localhost:3000',
-    }
+    proxy: [
+      {
+        context: ['/','/build'],   // array of paths to proxy
+        target: 'http://localhost:3000',
+        changeOrigin: true,        // optional but recommended
+        secure: false,             // if you're using https locally and want to ignore cert errors
+      },
+    ],
   },
   devtool: 'eval-source-map',
   module: {
@@ -59,13 +64,18 @@ module.exports = {
       test: /\.(png|woff|woff2|eot|ttf|svg)$/,
       /* loads files as base64 encoded data url if image file is less than set limit,
       if file is  greater than the limit (bytes), file-loader is used as fallback*/
-      loader: 'url-loader?limit=100000'
+      use: {
+        loader: 'url-loader',
+        options: {
+          limit: 100000,
+        }
+      }
     }
     ]
   },
   plugins: [
     //CleanWebpackPlugin will remove all files inside webpack's output.path directory, as well as all unused webpack assets after every successful rebuild.
-    new CleanWebpackPlugin(['build']),
+    new CleanWebpackPlugin(),
     //creation of HTML files to serve your webpack bundles
     new HtmlWebpackPlugin({
       template: './src/index.html',

@@ -15,8 +15,6 @@ const clientSchema = new Schema({
   appointment: {type: Date, 
     default:() => new Date(new Date().getTime() + (Math.random()*180*24*60*60*1000))
   },
-  // active: {type: Boolean, 
-  //         default: false},
   schedueled: {type: Date, 
     default: Date.now}
 }, {

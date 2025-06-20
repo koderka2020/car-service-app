@@ -9,15 +9,15 @@ class Form extends React.Component {
     <div style={{padding: 30 }}>
       <h2>Add a new appointment</h2>
       <form onSubmit={this.props.handleInput} action="/table" method="POST" className="my-4 form-inline">
-      
-      <label className="name">Name</label>
-      <input  required placeholder='Joe Smith' type="text" name="name" id="name" className="form-control" value={this.props.state.name} onChange={this.props.handleChange}/>
-      
+      <>
+        <label className="name">Name</label>
+        <input  required placeholder='Joe Smith' type="text" name="name" id="name" className="form-control" value={this.props.state.name} onChange={this.props.handleChange}/>
+      </>
       <label className="email">Email address</label>
       <input  required placeholder='joe@gmail.com' type="email" name="email" id="email" className="form-control" onChange={this.props.handleChange}/>
       
       <label className="time">Appointment description</label>
-      <input  required placeholder='description' type="text" name="reason" id="reason" className="form-control" onChange={this.props.handleChange}/> 
+      <input  required placeholder='type of service' type="text" name="reason" id="reason" className="form-control" onChange={this.props.handleChange}/> 
       
       <br/>
       {/* <label className="date">Date</label>

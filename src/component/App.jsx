@@ -11,11 +11,10 @@ class App extends Component {
       email: "",
       date: "",
       reason: "",
-      active: false,
       all: [],
       checked: [],
     }
-    this.data = this.data.bind(this);
+    this.getAppointments = this.getAppointments.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeChk = this.handleChangeChk.bind(this);
@@ -26,45 +25,43 @@ class App extends Component {
 
   handleInput(event) {
     event.preventDefault();
-    alert('a new client was saved to the database');
+    alert('Creating new appointment');
     const inputName = this.state.name;
     const inputEmail = this.state.email;
     const inputReason = this.state.reason;
-    const inputActive = this.state.active;
 
     const newClient = JSON.stringify({
       name: inputName,
       email: inputEmail,
       reason: inputReason,
-      active: inputActive,
     });
 
-    fetch('/client', {
+    fetch('/', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: newClient,
     })
     .then(response => response.json())
     .then(result => {
-      // console.log('testing fetch POST to create client:'+ result);
+      console.log('testing fetch POST to create client:'+ result);
       this.setState(prev => ({
         name: "",
         email: "",
         date: "",
-        reason: "",
-        active: false,
-        all: [...prev.all, result],
-      }))})
-      .catch(err => `Error sending request to create new record because of ${err}` );
+        reason: ""
+      }));
+      this.getAppointments();
+    })
+    .catch(err => `Error sending request to create new record because of ${err}` );
 
     event.target.reset();
   }
 
-  data () { 
-    return fetch('/client')
-  .then(response => response.json())
-  .then(data => this.setState({ all: data }))
-  .catch(err => `Error sending request to get all record from MongoDB because of ${err}` )
+  getAppointments(){ 
+   fetch('/')
+    .then(response => response.json())
+    .then(data => this.setState({ all: data }))
+    .catch(err => `Error sending request to get all record from MongoDB because of ${err}` )
  }
 //method to accept inputs from the form and change the state
   handleChange(event) {
@@ -91,8 +88,8 @@ class App extends Component {
 
   //function invoked after the delete button gets clicked
   deleteRecord() {
-    if(window.confirm('Are you sure, want to delete the selected appointments?')) {
-			fetch('/client', {
+    if(window.confirm('Are you sure about deleting selected appointment/s?')) {
+			fetch('/', {
 				method: 'DELETE',
         headers: {'Content-Type' : 'application/json'},
 				body: JSON.stringify({ids : this.state.checked}),
@@ -100,7 +97,7 @@ class App extends Component {
       .then(response => this.setState({checked: []}))
       .catch(err => `Error sending request to delete records because of ${err}`)
 		};
-    this.data();
+    this.getAppointments();
 	}
 
   //method to update scheduled time => new random date/time
@@ -124,10 +121,9 @@ class App extends Component {
     }
   this.setState({ 
     ...this.state,
-    active: false,
     checked: []});
 
-    this.data();
+    this.getAppointments();
   }
 
   filter(){
@@ -136,7 +132,7 @@ class App extends Component {
 
 componentDidMount() {
   // Simple GET request using fetch to get all records from MongoDB
-  this.data();
+  this.getAppointments();
 }
 
 render(props){
